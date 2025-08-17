@@ -1,20 +1,38 @@
-{
-  "date": "2025-08-17",
-  "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-17T12:00:00+10:00",
-  "bookings": [
-    {
-      "booking_number": "8859",
-      "id": "slack:1723861234.12345",
-      "name": "Eli Chrystal",
-      "email": "jack.eli.chrystal@icloud.com",
-      "unit": "Building management",
-      "area": "Parking Ground Level Visitor",
-      "start_date": "2025-08-25",
-      "end_date": "2025-08-25",
-      "vehicle_rego": "",
-      "status": "valid",                // "valid" | "cancelled"
-      "source_link": ""
-    }
-  ]
-}
+[
+  {
+    "id": "9001",
+    "name": "Alice Johnson",
+    "unit": "803",
+    "vehicleReg": "AUG123",
+    "start": "2025-08-17T08:00:00+10:00",
+    "end": "2025-08-17T22:00:00+10:00",
+    "source": "Slack"
+  },
+  {
+    "id": "9002",
+    "name": "Bob Smith",
+    "unit": "1402",
+    "vehicleReg": "BOB456",
+    "start": "2025-08-18T10:00:00+10:00",
+    "end": "2025-08-18T14:00:00+10:00",
+    "source": "Slack"
+  },
+  {
+    "id": "9003",
+    "name": "Charlie Davis",
+    "unit": "1201",
+    "vehicleReg": "CHAZ789",
+    "start": "2025-08-15T09:00:00+10:00",
+    "end": "2025-08-15T17:00:00+10:00",
+    "source": "Slack"
+  },
+  {
+    "id": "9004",
+    "name": "Diana Torres",
+    "unit": "505",
+    "vehicleReg": "DI1234",
+    "start": "2025-08-20T07:00:00+10:00",
+    "end": "2025-08-20T18:00:00+10:00",
+    "source": "Slack"
+  }
+]
