@@ -1,22 +1,31 @@
-[
-  {
-    "bookingNumber": "8859",
-    "name": "Eli Chrystal",
-    "email": "jack.eli.chrystal@icloud.com",
-    "building": "2-8 Joseph Rd",
-    "apartment": "Building management",
-    "time": "25/8/2025 to 25/8/2025",
-    "amenity": "Parking Ground Level Visitor",
-    "rego": ""
-  },
-  {
-    "bookingNumber": "8860",
-    "name": "Sarah Connor",
-    "email": "sarah.connor@example.com",
-    "building": "2-8 Joseph Rd",
-    "apartment": "1205",
-    "time": "25/8/2025 to 27/8/2025",
-    "amenity": "Parking Ground Level Visitor",
-    "rego": "XYZ123"
-  }
-]
+{
+  "date": "2025-08-17",
+  "timezone": "Australia/Melbourne",
+  "generated_at": "2025-08-17T09:30:00+10:00",
+  "bookings": [
+    {
+      "booking_number": "8859",
+      "id": "slack:1723861234.12345",
+      "name": "Eli Chrystal",
+      "email": "jack.eli.chrystal@icloud.com",
+      "unit": "Building management",
+      "area": "Parking Ground Level Visitor",
+      "start_time": "08:30",
+      "end_time": "10:30",
+      "vehicle_rego": "",
+      "source": "Slack"
+    },
+    {
+      "booking_number": "8860",
+      "id": "slack:1723869876.54321",
+      "name": "Sarah Connor",
+      "email": "sarah.connor@example.com",
+      "unit": "1205",
+      "area": "Parking Ground Level Visitor",
+      "start_time": "11:00",
+      "end_time": "14:00",
+      "vehicle_rego": "XYZ123",
+      "source": "Slack"
+    }
+  ]
+}
