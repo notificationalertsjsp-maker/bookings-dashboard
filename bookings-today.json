@@ -13,19 +13,8 @@
       "start_date": "2025-08-25",
       "end_date": "2025-08-25",
       "vehicle_rego": "",
-      "source_link": "https://slack.example/message/123"
-    },
-    {
-      "booking_number": "8860",
-      "id": "slack:1723869876.54321",
-      "name": "Sarah Connor",
-      "email": "sarah.connor@example.com",
-      "unit": "1205",
-      "area": "Parking Ground Level Visitor",
-      "start_date": "2025-08-25",
-      "end_date": "2025-08-27",
-      "vehicle_rego": "XYZ123",
-      "source_link": "https://slack.example/message/456"
+      "status": "valid",                // "valid" | "cancelled"
+      "source_link": ""
     }
   ]
 }
