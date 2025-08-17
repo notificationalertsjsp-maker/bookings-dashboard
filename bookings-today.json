@@ -1,20 +1,31 @@
 {
+  "date": "2025-08-18",
+  "timezone": "Australia/Melbourne",
+  "generated_at": "2025-08-18T03:25:00+10:00",
   "bookings": [
     {
+      "id": "9002",
+      "booking_number": "9002",
       "name": "Bob Smith",
+      "email": "",
       "unit": "1402",
-      "rego": "BOB456",
-      "bookingId": "9002",
-      "type": "Parking",
-      "validUntil": "2025-08-18T23:59:59"
+      "start_date": "2025-08-18",
+      "end_date": "2025-08-18",
+      "vehicle_rego": "BOB456",
+      "status": "valid",
+      "source_link": ""
     },
     {
+      "id": "9003",
+      "booking_number": "9003",
       "name": "Sonia Mahoney",
+      "email": "",
       "unit": "1402RO",
-      "rego": null,
-      "bookingId": "9003",
-      "type": "Parking",
-      "validUntil": "2025-08-19T23:59:59"
+      "start_date": "2025-08-18",
+      "end_date": "2025-08-19",
+      "vehicle_rego": "",
+      "status": "valid",
+      "source_link": ""
     }
   ]
 }
