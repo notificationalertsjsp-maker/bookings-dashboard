@@ -1,7 +1,7 @@
 {
   "date": "2025-08-17",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-17T09:30:00+10:00",
+  "generated_at": "2025-08-17T12:00:00+10:00",
   "bookings": [
     {
       "booking_number": "8859",
@@ -10,10 +10,10 @@
       "email": "jack.eli.chrystal@icloud.com",
       "unit": "Building management",
       "area": "Parking Ground Level Visitor",
-      "start_time": "08:30",
-      "end_time": "10:30",
+      "start_date": "2025-08-25",
+      "end_date": "2025-08-25",
       "vehicle_rego": "",
-      "source": "Slack"
+      "source_link": "https://slack.example/message/123"
     },
     {
       "booking_number": "8860",
@@ -22,10 +22,10 @@
       "email": "sarah.connor@example.com",
       "unit": "1205",
       "area": "Parking Ground Level Visitor",
-      "start_time": "11:00",
-      "end_time": "14:00",
+      "start_date": "2025-08-25",
+      "end_date": "2025-08-27",
       "vehicle_rego": "XYZ123",
-      "source": "Slack"
+      "source_link": "https://slack.example/message/456"
     }
   ]
 }
