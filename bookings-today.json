@@ -114,18 +114,6 @@
     {
       "id": "",
       "booking_number": "",
-      "name": "Rebecca Kiapekos",
-      "email": "",
-      "unit": "1103RO",
-      "start_date": "2025-08-17",
-      "end_date": "2025-08-18",
-      "vehicle_rego": "1JZ9T0",
-      "status": "valid",
-      "source_link": ""
-    },
-    {
-      "id": "",
-      "booking_number": "",
       "name": "Sheikh Basil Saeed",
       "email": "",
       "unit": "1107RO",
@@ -458,6 +446,6 @@
       "vehicle_rego": "ATF567",
       "status": "valid",
       "source_link": ""
-    },
+    }
   ]
 }
