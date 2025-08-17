@@ -1,38 +1,67 @@
-[
-  {
-    "id": "9001",
-    "name": "Alice Johnson",
-    "unit": "803",
-    "vehicleReg": "AUG123",
-    "start": "2025-08-17T08:00:00+10:00",
-    "end": "2025-08-17T22:00:00+10:00",
-    "source": "Slack"
-  },
-  {
-    "id": "9002",
-    "name": "Bob Smith",
-    "unit": "1402",
-    "vehicleReg": "BOB456",
-    "start": "2025-08-18T10:00:00+10:00",
-    "end": "2025-08-18T14:00:00+10:00",
-    "source": "Slack"
-  },
-  {
-    "id": "9003",
-    "name": "Charlie Davis",
-    "unit": "1201",
-    "vehicleReg": "CHAZ789",
-    "start": "2025-08-15T09:00:00+10:00",
-    "end": "2025-08-15T17:00:00+10:00",
-    "source": "Slack"
-  },
-  {
-    "id": "9004",
-    "name": "Diana Torres",
-    "unit": "505",
-    "vehicleReg": "DI1234",
-    "start": "2025-08-20T07:00:00+10:00",
-    "end": "2025-08-20T18:00:00+10:00",
-    "source": "Slack"
-  }
-]
+{
+  "date": "2025-08-17",
+  "timezone": "Australia/Melbourne",
+  "generated_at": "2025-08-17T15:00:00+10:00",
+  "bookings": [
+    {
+      "booking_number": "9001",
+      "id": "demo-9001",
+      "name": "Alice Johnson",
+      "email": "alice@example.com",
+      "unit": "803",
+      "start_date": "2025-08-17",
+      "end_date": "2025-08-17",
+      "vehicle_rego": "AUG123",
+      "status": "valid",
+      "source_link": ""
+    },
+    {
+      "booking_number": "9002",
+      "id": "demo-9002",
+      "name": "Bob Smith",
+      "email": "bob@example.com",
+      "unit": "1402",
+      "start_date": "2025-08-18",
+      "end_date": "2025-08-18",
+      "vehicle_rego": "BOB456",
+      "status": "valid",
+      "source_link": ""
+    },
+    {
+      "booking_number": "9003",
+      "id": "demo-9003",
+      "name": "Charlie Davis",
+      "email": "charlie@example.com",
+      "unit": "1201",
+      "start_date": "2025-08-15",
+      "end_date": "2025-08-15",
+      "vehicle_rego": "CHAZ789",
+      "status": "valid",
+      "source_link": ""
+    },
+    {
+      "booking_number": "9004",
+      "id": "demo-9004",
+      "name": "Diana Torres",
+      "email": "diana@example.com",
+      "unit": "505",
+      "start_date": "2025-08-20",
+      "end_date": "2025-08-20",
+      "vehicle_rego": "DI1234",
+      "status": "valid",
+      "source_link": ""
+    },
+    {
+      "booking_number": "9005",
+      "id": "demo-9005",
+      "name": "Evan Patel",
+      "email": "evan@example.com",
+      "unit": "1107",
+      "start_date": "2025-08-17",
+      "end_date": "2025-08-17",
+      "vehicle_rego": "",
+      "status": "cancelled",
+      "source_link": ""
+    }
+  ]
+}
