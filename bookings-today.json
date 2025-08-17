@@ -1,7 +1,7 @@
 {
   "date": "2025-08-17",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-17T21:15:15.992Z",
+  "generated_at": "2025-08-17T21:15:16.405Z",
   "bookings": [
     {
       "id": "wendy-501RO",
@@ -464,8 +464,8 @@
         "endDate": "19/8/2025"
       },
       "slackPermalink": null,
-      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8871\n:bust_in_silhouette: *Name:* Rizq Rosali\n:e-mail: *Email:* <mailto:ri_zq@hotmail.com|ri_zq@hotmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 1708RO\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Ground Level Visitor Ground 10",
-      "parsedAt": "2025-08-17T21:15:15.332Z"
+      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8872\n:bust_in_silhouette: *Name:* Rizq Rosali\n:e-mail: *Email:* <mailto:ri_zq@hotmail.com|ri_zq@hotmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 1708RO\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Ground Level Visitor Ground 10",
+      "parsedAt": "2025-08-17T21:15:15.723Z"
     }
   ]
 }
