@@ -1,1 +1,20 @@
-
+{
+  "bookings": [
+    {
+      "name": "Bob Smith",
+      "unit": "1402",
+      "rego": "BOB456",
+      "bookingId": "9002",
+      "type": "Parking",
+      "validUntil": "2025-08-18T23:59:59"
+    },
+    {
+      "name": "Sonia Mahoney",
+      "unit": "1402RO",
+      "rego": null,
+      "bookingId": "9003",
+      "type": "Parking",
+      "validUntil": "2025-08-19T23:59:59"
+    }
+  ]
+}
