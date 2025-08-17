@@ -1,6 +1,22 @@
-{
-  "date": "2025-08-17",
-  "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-17T10:12:42.697622",
-  "bookings": []
-}
+[
+  {
+    "bookingNumber": "8859",
+    "name": "Eli Chrystal",
+    "email": "jack.eli.chrystal@icloud.com",
+    "building": "2-8 Joseph Rd",
+    "apartment": "Building management",
+    "time": "25/8/2025 to 25/8/2025",
+    "amenity": "Parking Ground Level Visitor",
+    "rego": ""
+  },
+  {
+    "bookingNumber": "8860",
+    "name": "Sarah Connor",
+    "email": "sarah.connor@example.com",
+    "building": "2-8 Joseph Rd",
+    "apartment": "1205",
+    "time": "25/8/2025 to 27/8/2025",
+    "amenity": "Parking Ground Level Visitor",
+    "rego": "XYZ123"
+  }
+]
