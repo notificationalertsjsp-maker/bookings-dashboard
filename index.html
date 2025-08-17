@@ -27,7 +27,7 @@
     .btn{appearance:none;border:1px solid var(--border);background:var(--card);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer;box-shadow:var(--shadow)}
     .btn:active{transform:translateY(1px)}
     .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 18px}
-    .input,select{background:var(--card);color:var(--text);border:1px solid var(--border);padding:10px 12px;border-radius:10px;min-width:190px}
+    .input{background:var(--card);color:var(--text);border:1px solid var(--border);padding:10px 12px;border-radius:10px;min-width:280px}
     .cards{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:10px}
     @media(min-width:720px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
     .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
@@ -51,7 +51,7 @@
   </style>
 </head>
 <body>
-  <!-- BASIC PASSWORD GATE (demo) -->
+  <!-- BASIC PASSWORD GATE (demo only) -->
   <div id="lock">
     <div class="panel">
       <h2 style="margin:0 0 12px 0;">Enter password</h2>
@@ -60,7 +60,7 @@
         <button id="unlockBtn" class="btn">Unlock</button>
       </div>
       <p id="lockMsg" class="hint" style="margin-top:10px;display:none;color:#ff8080">Wrong password</p>
-      <p class="hint" style="margin-top:6px">Demo-only lock (password is <strong>password</strong>). Not real security.</p>
+      <p class="hint" style="margin-top:6px">Demo lock (password is <strong>password</strong>). Not real security.</p>
     </div>
   </div>
 
@@ -79,7 +79,6 @@
 
     <div class="controls">
       <input class="input" id="q" type="search" placeholder="Search name / unit / area / email" />
-      <select id="areaFilter"><option value="">All areas</option></select>
       <span class="badge" id="count">0 bookings</span>
     </div>
 
@@ -95,13 +94,14 @@
   <div class="toast" id="toast">Data updated</div>
 
   <script>
-    // ====== DEMO PASSWORD (plain-text on purpose for your test) ======
+    // ====== DEMO PASSWORD (plain-text for testing) ======
     const DEMO_PASSWORD = "password";
 
     // ====== CONFIG ======
     const REFRESH_EVERY_MS = 60_000;
     const DATA_URL = new URLSearchParams(location.search).get("data") || "bookings-today.json";
     const POST_URL = new URLSearchParams(location.search).get("post"); // optional webhook for rego edits
+    const SHOW_ALL = new URLSearchParams(location.search).get("all") === "1";
 
     // ====== STATE ======
     let prevHash = null;
@@ -118,6 +118,11 @@
       const diff=Math.max(0,Math.floor((expiry-Date.now())/(1000*60*60)));
       return diff;
     };
+    const todayYMD = new Date().toLocaleDateString("en-CA", { timeZone: "Australia/Melbourne" }); // YYYY-MM-DD
+    const isValidToday = (b) =>
+      (b.status || "valid") !== "cancelled" &&
+      (!b.start_date || b.start_date <= todayYMD) &&
+      (!b.end_date   || todayYMD <= b.end_date);
 
     // ====== REGO OVERRIDES (local, optional POST) ======
     const LS_KEY = "regoOverrides_v1";
@@ -136,11 +141,19 @@
     // ====== RENDER ======
     function render(list){
       const q = document.getElementById("q").value.trim().toLowerCase();
-      const areaSel = document.getElementById("areaFilter").value;
-      let filtered = list;
+
+      // Base: today-only unless ?all=1
+      let filtered = SHOW_ALL ? list.slice() : list.filter(isValidToday);
+
+      // search
       if(q) filtered = filtered.filter(b => [b.name,b.unit,b.area,b.email].join(" ").toLowerCase().includes(q));
-      if(areaSel) filtered = filtered.filter(b => (b.area||"").toLowerCase() === areaSel.toLowerCase());
-      filtered.sort((a,b)=> (a.end_date||"").localeCompare(b.end_date||"") || (a.area||"").localeCompare(b.area||""));
+
+      // sort: end_date, area, name
+      filtered.sort((a,b)=> 
+        (a.end_date||"").localeCompare(b.end_date||"") ||
+        (a.area||"").localeCompare(b.area||"") ||
+        (a.name||"").localeCompare(b.name||"")
+      );
 
       const cards = document.getElementById("cards");
       cards.innerHTML = "";
@@ -201,12 +214,6 @@
       `;
     }
 
-    function buildAreas(list){
-      const sel=document.getElementById("areaFilter");
-      const areas=Array.from(new Set(list.map(b=>b.area).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-      sel.innerHTML = '<option value="">All areas</option>' + areas.map(a=>`<option>${escapeHtml(a)}</option>`).join("");
-    }
-
     // ====== FETCH ======
     async function load(){
       const src = DATA_URL + (DATA_URL.includes("?") ? `&_=${Date.now()}` : `?t=${Date.now()}`);
@@ -221,7 +228,6 @@
         if(prevHash && hash!==prevHash) showToast();
         prevHash = hash;
         document.getElementById("today").textContent = fmtDateLong(date || generated_at);
-        buildAreas(all.bookings);
         render(all.bookings);
         localStorage.setItem("bookings-cache", JSON.stringify(all));
         document.getElementById("updated").textContent = fmtDateLong(generated_at || new Date().toISOString());
@@ -246,7 +252,6 @@
       document.getElementById("btnRefresh").addEventListener("click", load);
       document.getElementById("btnExport").addEventListener("click", exportJson);
       document.getElementById("q").addEventListener("input", ()=>render(all.bookings));
-      document.getElementById("areaFilter").addEventListener("change", ()=>render(all.bookings));
       let on=true; setInterval(()=>{ document.getElementById("liveDot").style.opacity=on?1:.35; on=!on; },800);
       load(); setInterval(load, REFRESH_EVERY_MS);
     }
