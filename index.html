@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Today’s Valid Bookings</title>
+  <title>Parking Dashboard</title>
   <meta name="color-scheme" content="light dark" />
   <style>
     :root{--bg:#0b0c10;--panel:#111217;--text:#e9eef2;--muted:#9aa4ad;--accent:#5dd3ff;--ok:#27c07d;--bad:#ff6b6b;--chip:#20232b;--border:#2a2f3a;--card:#151821;--shadow:0 10px 30px rgba(0,0,0,.35);--warn:#f5a524}
@@ -61,7 +61,7 @@
   <div class="wrap" id="app" hidden>
     <header>
       <div>
-        <h1>Today’s Valid Bookings</h1>
+        <h1>Parking Dashboard</h1>
         <div class="subtitle"><span id="today">—</span></div>
       </div>
       <div class="statusbar">
@@ -112,7 +112,7 @@
     const escapeHtml = (x)=> String(x||"").replace(/[&<>\"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
     const sha256 = async (str)=>{ const enc=new TextEncoder().encode(str); const buf=await crypto.subtle.digest("SHA-256",enc); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("") };
 
-    // AU format for display (DD-MM-YYYY)
+    // AU display format (DD-MM-YYYY)
     const fmtAU = (iso)=> {
       try{
         const d = new Date(iso+"T00:00:00");
@@ -343,8 +343,6 @@
 
         if(prevHash !== hash){
           all = next;
-          const displayDate = date || generated_at || new Date().toISOString();
-          document.getElementById("today").textContent = fmtDateLongAU(displayDate);
           render(all.bookings);
           document.getElementById("updated").textContent = fmtDateLongAU(generated_at || new Date().toISOString());
           localStorage.setItem("bookings-cache", JSON.stringify(all));
@@ -380,6 +378,10 @@
     }
 
     function startApp(){
+      // Header date: ALWAYS dynamic today in Australia/Melbourne
+      document.getElementById("today").textContent =
+        new Date().toLocaleDateString("en-AU",{dateStyle:"full", timeZone:"Australia/Melbourne"});
+
       document.getElementById("btnRefresh").addEventListener("click", load);
       document.getElementById("btnExport").addEventListener("click", exportJson);
       document.getElementById("q").addEventListener("input", ()=>render(all.bookings));
@@ -388,8 +390,6 @@
       let on=true; setInterval(()=>{ document.getElementById("liveDot").style.opacity=on?1:.35; on=!on; },800);
 
       load(); setInterval(load, REFRESH_EVERY_MS);
-      // Header date text (today in AU long)
-      document.getElementById("today").textContent = fmtDateLongAU(new Date());
     }
 
     // Lock screen
