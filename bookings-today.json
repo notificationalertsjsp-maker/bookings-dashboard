@@ -1,7 +1,7 @@
 {
   "date": "2025-08-17",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-17T15:00:17.951Z",
+  "generated_at": "2025-08-17T16:55:20.358Z",
   "bookings": [
     {
       "booking_number": "9001",
@@ -79,6 +79,26 @@
       "slackPermalink": null,
       "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8869\n:bust_in_silhouette: *Name:* Sonia Mahoney\n:e-mail: *Email:* <mailto:sonialmahoney@gmail.com|sonialmahoney@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 1402RO\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Level Two Visitor Level Two 40",
       "parsedAt": "2025-08-17T15:00:17.233Z"
+    },
+    {
+      "booking_number": "Details",
+      "id": "slack:Details",
+      "name": "Julie Le",
+      "email": "jayylee_@hotmail.com",
+      "unit": null,
+      "start_date": "2025-08-19",
+      "end_date": "2025-08-20",
+      "vehicle_rego": null,
+      "status": "valid",
+      "source_link": null,
+      "apartment": "2209RO",
+      "originalDateRange": {
+        "startDate": "19/8/2025",
+        "endDate": "20/8/2025"
+      },
+      "slackPermalink": null,
+      "originalMessage": ":office: New Booking Details\n\n:clipboard: Booking Number: 8865\n:bust_in_silhouette: Name: Julie Le\n:e-mail: Email: <mailto:jayylee_@hotmail.com|jayylee_@hotmail.com>\n:house: Building: 2-8 Joseph Rd\n:door: Apartment: 2209RO\n:alarm_clock: Time: 19/8/2025 to 20/8/2025\n:dart: Amenity: Parking Ground Level Visitor Ground 15",
+      "parsedAt": "2025-08-17T11:28:21.601Z"
     }
   ]
 }
