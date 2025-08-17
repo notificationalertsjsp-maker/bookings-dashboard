@@ -9,7 +9,7 @@
     :root{--bg:#0b0c10;--panel:#111217;--text:#e9eef2;--muted:#9aa4ad;--accent:#5dd3ff;--ok:#27c07d;--bad:#ff6b6b;--chip:#20232b;--border:#2a2f3a;--card:#151821;--shadow:0 10px 30px rgba(0,0,0,.35);--warn:#f5a524}
     @media(prefers-color-scheme:light){:root{--bg:#f6f7fb;--panel:#fff;--text:#1a1f2b;--muted:#5b6572;--accent:#006af6;--ok:#0b8e5a;--bad:#cc2e2e;--chip:#eef2f8;--border:#e6e9f0;--card:#fff;--shadow:0 8px 24px rgba(16,24,40,.08);--warn:#b8860b}}
     *{box-sizing:border-box}
-    body{margin:0;font:14px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,"Apple Color Emoji","Segoe UI Emoji";background:linear-gradient(180deg,var(--bg),var(--panel));color:var(--text);min-height:100vh}
+    body{margin:0;font:14px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Noto Sans,Arial;background:linear-gradient(180deg,var(--bg),var(--panel));color:var(--text);min-height:100vh}
     .wrap{max-width:980px;margin:0 auto;padding:24px}
     header{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
     h1{margin:0;font-size:22px;letter-spacing:.2px}
@@ -20,7 +20,6 @@
     .btn{appearance:none;border:1px solid var(--border);background:var(--card);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer;box-shadow:var(--shadow)}
     .btn.sm{padding:6px 10px;font-size:12px}
     .btn.warn{border-color:var(--bad)}
-    .btn:active{transform:translateY(1px)}
     .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 18px}
     .input{background:var(--card);color:var(--text);border:1px solid var(--border);padding:10px 12px;border-radius:10px;min-width:280px}
     .cards{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:10px}
@@ -28,21 +27,21 @@
     .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
     .toprow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
     .right{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
-    .rego{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;background:var(--chip);border:1px solid var(--border);padding:4px 8px;border-radius:8px}
+    .rego{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--chip);border:1px solid var(--border);padding:4px 8px;border-radius:8px}
     .name{font-weight:600}
     .unit{color:var(--muted)}
     .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .editrow{display:flex;gap:8px;align-items:center;margin-top:6px}
     .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
     .footer{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
     .pill{padding:2px 8px;border-radius:999px;border:1px solid var(--border);background:var(--chip)}
     .empty{text-align:center;padding:40px;border:1px dashed var(--border);border-radius:16px;background:color-mix(in srgb,var(--card) 80%, transparent)}
     .toast{position:fixed;inset:auto 16px 16px auto;background:var(--card);color:var(--text);border:1px solid var(--border);box-shadow:var(--shadow);padding:10px 12px;border-radius:10px;opacity:0;transform:translateY(6px);transition:.25s ease}
     .toast.show{opacity:1;transform:translateY(0)}
-    .hint{color:var(--warn);font-size:12px}
-    .editrow{display:flex;gap:8px;align-items:center;margin-top:6px}
     /* Demo lock */
     #lock{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--bg),var(--panel));z-index:50}
     #lock .panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);min-width:320px;text-align:center}
+    .hint{color:var(--warn);font-size:12px}
   </style>
 </head>
 <body>
@@ -63,12 +62,12 @@
     <header>
       <div>
         <h1>Today’s Valid Bookings</h1>
-        <div class="subtitle" id="sub"><span id="today">—</span></div>
+        <div class="subtitle"><span id="today">—</span></div>
       </div>
       <div class="statusbar">
         <span class="badge" title="Auto-refresh"><span class="dot" id="liveDot"></span> Live</span>
-        <button class="btn" id="btnRefresh" title="Force refresh">Refresh</button>
-        <button class="btn" id="btnExport" title="Download current JSON">Export JSON</button>
+        <button class="btn" id="btnRefresh">Refresh</button>
+        <button class="btn" id="btnExport">Export JSON</button>
       </div>
     </header>
 
@@ -92,13 +91,13 @@
     /* ================= CONFIG ================= */
     const DEMO_PASSWORD = "password";
 
-    // Hard-coded webhook (still overridable via ?post=...)
+    // Hard-coded webhook (override with ?post= if you want)
     const OVERRIDE_POST_URL = "https://eof2j26m45p8mtm.m.pipedream.net";
 
-    // Faster refresh for near-instant updates (5s)
-    const REFRESH_EVERY_MS = 5_000;
+    // Refresh interval (ms)
+    const REFRESH_EVERY_MS = 5000;
 
-    // Allow overriding data/post via query if you ever need:
+    // Query-string overrides
     const QS = new URLSearchParams(location.search);
     const DATA_URL = QS.get("data") || "bookings-today.json";
     const POST_URL = QS.get("post") || OVERRIDE_POST_URL;
@@ -110,43 +109,74 @@
     let all = { date: null, timezone: "Australia/Melbourne", generated_at: null, bookings: [] };
 
     /* ================= UTIL ================= */
-    const fmtDateLong = (s)=>{ try{ const d=s?new Date(s):new Date(); return new Intl.DateTimeFormat("en-AU",{dateStyle:"full"}).format(d);}catch{return s||"—"} };
     const escapeHtml = (x)=> String(x||"").replace(/[&<>\"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
     const sha256 = async (str)=>{ const enc=new TextEncoder().encode(str); const buf=await crypto.subtle.digest("SHA-256",enc); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("") };
-    const hoursUntil = (yyyy_mm_dd)=>{
-      if(!yyyy_mm_dd) return null;
-      const [y,m,d]=yyyy_mm_dd.split("-").map(Number);
-      const expiry=new Date(y,m-1,d,23,59,59).getTime();
-      const diff=Math.max(0,Math.floor((expiry-Date.now())/(1000*60*60)));
-      return diff;
-    };
 
-    // Date normaliser: YYYY-MM-DD or D/M/YYYY
+    // AU format for display (DD-MM-YYYY)
+    const fmtAU = (iso)=> {
+      try{
+        const d = new Date(iso+"T00:00:00");
+        const dd = String(d.getDate()).padStart(2,'0');
+        const mm = String(d.getMonth()+1).padStart(2,'0');
+        const yyyy = d.getFullYear();
+        return `${dd}-${mm}-${yyyy}`;
+      }catch{return iso||"—"}
+    };
+    const fmtDateLongAU = (s)=>{ try{ const d=s?new Date(s):new Date(); return new Intl.DateTimeFormat("en-AU",{dateStyle:"full"}).format(d);}catch{return s||"—"} };
+
+    // D/M/YYYY or YYYY-MM-DD -> YYYY-MM-DD
     function normalizeDate(s){
       if(!s) return null;
       const t = String(s).trim();
       if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
       const m = t.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-      if (m){
-        const d = m[1].padStart(2,'0');
-        const mo = m[2].padStart(2,'0');
-        const y = m[3];
-        return `${y}-${mo}-${d}`;
-      }
+      if (m){ return `${m[3]}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`; }
       return null;
     }
 
-    // Accept camelCase or snake_case
+    // Parse a field from Slack "originalMessage"
+    function fromOriginal(msg, re) {
+      if (!msg) return null;
+      const m = msg.match(re);
+      return m ? String(m[1]).trim() : null;
+    }
+
+    // Accept camelCase/snake_case; repair missing fields from originalMessage
     function adaptBooking(b){
-      const out = {...b};
+      const out = { ...b };
+
+      // Map camelCase -> snake_case
       if (!out.booking_number && b.bookingNumber) out.booking_number = String(b.bookingNumber);
       if (!out.id && b.bookingId) out.id = String(b.bookingId);
       if (!out.unit && b.apartment) out.unit = String(b.apartment);
       if (!out.start_date && b.startDate) out.start_date = normalizeDate(b.startDate) || String(b.startDate);
       if (!out.end_date && b.endDate) out.end_date = normalizeDate(b.endDate) || String(b.endDate);
       if (!out.source_link && b.slackPermalink) out.source_link = b.slackPermalink || "";
-      if (out.vehicleReg && !out.vehicle_rego) out.vehicle_rego = String(b.vehicleReg);
-      if (!out.status && b.status) out.status = String(b.status);
+      if (!out.vehicle_rego && b.vehicleReg) out.vehicle_rego = String(b.vehicleReg);
+
+      // Clean name (strip Slack asterisks)
+      if (out.name) out.name = String(out.name).replace(/^\*\s*|\s*\*$/g, "");
+
+      // Fix booking number if missing/"Details"
+      if (!out.booking_number || /^details$/i.test(out.booking_number)) {
+        const numFromMsg = fromOriginal(b.originalMessage, /Booking Number:\s*\*?(\d+)\*?/i);
+        if (numFromMsg) out.booking_number = numFromMsg;
+      }
+
+      // Fill unit if missing/null from originalMessage
+      const unitMissing = out.unit == null || String(out.unit).trim().toLowerCase()==="null" || String(out.unit).trim()==="";
+      if (unitMissing) {
+        const aptFromMsg = fromOriginal(b.originalMessage, /Apartment:\s*\*?([A-Za-z0-9\- ]+)\*?/i);
+        if (aptFromMsg) out.unit = aptFromMsg;
+      }
+
+      // Normalize dates if present
+      if (out.start_date) out.start_date = normalizeDate(out.start_date) || out.start_date;
+      if (out.end_date) out.end_date = normalizeDate(out.end_date) || out.end_date;
+
+      // Default status
+      if (!out.status) out.status = "valid";
+
       return out;
     }
 
@@ -174,7 +204,10 @@
     };
 
     const makeKey = (b)=> b.id || b.booking_number || `${b.name}|${b.unit}|${b.start_date}|${b.end_date}`;
+
+    // "Today" based on Melbourne time
     const todayYMD = new Date().toLocaleDateString("en-CA", { timeZone: "Australia/Melbourne" }); // YYYY-MM-DD
+
     const isValidToday = (b) => {
       const key = makeKey(b);
       const localStatus = getOverrideStatus(key);
@@ -186,13 +219,21 @@
       return status !== "cancelled" && (SHOW_ALL ? true : inRange);
     };
 
+    function hoursUntil(yyyy_mm_dd){
+      if(!yyyy_mm_dd) return null;
+      const [y,m,d]=yyyy_mm_dd.split("-").map(Number);
+      const expiry=new Date(y,m-1,d,23,59,59).getTime();
+      const diff=Math.max(0,Math.floor((expiry-Date.now())/(1000*60*60)));
+      return diff;
+    }
+
     function regoSection(key, rego, b){
       return `
         <div class="editrow">
-          <label for="rego-${encodeURIComponent(key)}" class="rego" title="Vehicle rego">${rego?escapeHtml(rego):"—"}</label>
-          <input id="rego-${encodeURIComponent(key)}" class="input input-rego" value="${escapeHtml(rego)}" placeholder="Enter rego (optional)" maxlength="12" />
+          <label class="rego" title="Vehicle rego">${rego?escapeHtml(rego):"—"}</label>
+          <input class="input input-rego" value="${escapeHtml(rego)}" placeholder="Enter rego (optional)" maxlength="12" />
           <button class="btn sm btn-save">Save</button>
-          <button class="btn sm btn-cancel" title="Reset field">Reset</button>
+          <button class="btn sm btn-reset" title="Reset field">Reset</button>
         </div>
       `;
     }
@@ -215,7 +256,7 @@
         const rego = (getOverrideRego(key) || b.vehicle_rego || "").toUpperCase();
         const endIso = normalizeDate(b.end_date);
         const hours = endIso ? hoursUntil(endIso) : null;
-        const validLine = endIso ? `Valid until 11:59pm ${escapeHtml(endIso)}${hours!==null?` • ~${hours}h left`:""}` : "Valid booking";
+        const validLine = endIso ? `Valid until 11:59pm ${fmtAU(endIso)}${hours!==null?` • ~${hours}h left`:""}` : "Valid booking";
         const isCancelled = (getOverrideStatus(key) || b.status || "").toLowerCase() === "cancelled";
 
         const el = document.createElement("article");
@@ -243,8 +284,9 @@
         `;
         cards.appendChild(el);
 
+        // Wire buttons
         const saveBtn = el.querySelector(".btn-save");
-        const resetBtn = el.querySelector(".btn-cancel");
+        const resetBtn = el.querySelector(".btn-reset");
         const input = el.querySelector(".input-rego");
         if(saveBtn && input){
           saveBtn.addEventListener("click", async ()=>{
@@ -288,10 +330,7 @@
           cache: "no-store",
           headers: lastETag ? { "If-None-Match": lastETag } : {}
         });
-        if(res.status === 304){
-          // No change — do nothing
-          return;
-        }
+        if(res.status === 304){ return; }
         if(!res.ok) throw new Error(res.status+" "+res.statusText);
 
         lastETag = res.headers.get("ETag") || null;
@@ -302,12 +341,12 @@
         const next = {date, timezone: timezone || "Australia/Melbourne", generated_at, bookings: adapted};
         const hash = await sha256(JSON.stringify(next));
 
-        // Only rerender if data changed
         if(prevHash !== hash){
           all = next;
-          document.getElementById("today").textContent = fmtDateLong(date || generated_at);
+          const displayDate = date || generated_at || new Date().toISOString();
+          document.getElementById("today").textContent = fmtDateLongAU(displayDate);
           render(all.bookings);
-          document.getElementById("updated").textContent = fmtDateLong(generated_at || new Date().toISOString());
+          document.getElementById("updated").textContent = fmtDateLongAU(generated_at || new Date().toISOString());
           localStorage.setItem("bookings-cache", JSON.stringify(all));
           if(prevHash) showToast("Data updated");
           prevHash = hash;
@@ -333,11 +372,7 @@
         const k = makeKey(b);
         const rego = regoMap[k];
         const status = statusMap[k];
-        return {
-          ...b,
-          ...(rego ? { vehicle_rego: rego } : {}),
-          ...(status ? { status } : {})
-        };
+        return { ...b, ...(rego ? { vehicle_rego: rego } : {}), ...(status ? { status } : {}) };
       });
       const out = {...all, bookings: merged, exported_at:new Date().toISOString()};
       const blob = new Blob([JSON.stringify(out,null,2)],{type:"application/json"});
@@ -352,11 +387,12 @@
       // Live dot pulse
       let on=true; setInterval(()=>{ document.getElementById("liveDot").style.opacity=on?1:.35; on=!on; },800);
 
-      // Kick off and poll
       load(); setInterval(load, REFRESH_EVERY_MS);
+      // Header date text (today in AU long)
+      document.getElementById("today").textContent = fmtDateLongAU(new Date());
     }
 
-    // Lock screen wiring
+    // Lock screen
     document.getElementById("unlockBtn").addEventListener("click", ()=>{
       const val = document.getElementById("pass").value;
       if(val === DEMO_PASSWORD){
