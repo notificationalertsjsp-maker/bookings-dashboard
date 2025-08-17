@@ -40,6 +40,7 @@
     .toast.show{opacity:1;transform:translateY(0)}
     .hint{color:var(--warn);font-size:12px}
     .editrow{display:flex;gap:8px;align-items:center;margin-top:6px}
+    /* Demo lock */
     #lock{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--bg),var(--panel));z-index:50}
     #lock .panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);min-width:320px;text-align:center}
   </style>
@@ -88,18 +89,27 @@
   <div class="toast" id="toast">Data updated</div>
 
   <script>
-    // ===== CONFIG =====
+    /* ================= CONFIG ================= */
     const DEMO_PASSWORD = "password";
-    const REFRESH_EVERY_MS = 60_000;
-    const DATA_URL = new URLSearchParams(location.search).get("data") || "bookings-today.json";
-    const POST_URL = new URLSearchParams(location.search).get("post"); // optional webhook endpoint
-    const SHOW_ALL = new URLSearchParams(location.search).get("all") === "1";
 
-    // ===== STATE =====
+    // Hard-coded webhook (still overridable via ?post=...)
+    const OVERRIDE_POST_URL = "https://eof2j26m45p8mtm.m.pipedream.net";
+
+    // Faster refresh for near-instant updates (5s)
+    const REFRESH_EVERY_MS = 5_000;
+
+    // Allow overriding data/post via query if you ever need:
+    const QS = new URLSearchParams(location.search);
+    const DATA_URL = QS.get("data") || "bookings-today.json";
+    const POST_URL = QS.get("post") || OVERRIDE_POST_URL;
+    const SHOW_ALL = QS.get("all") === "1";
+
+    /* ================= STATE ================= */
     let prevHash = null;
+    let lastETag = null;
     let all = { date: null, timezone: "Australia/Melbourne", generated_at: null, bookings: [] };
 
-    // ===== UTIL =====
+    /* ================= UTIL ================= */
     const fmtDateLong = (s)=>{ try{ const d=s?new Date(s):new Date(); return new Intl.DateTimeFormat("en-AU",{dateStyle:"full"}).format(d);}catch{return s||"—"} };
     const escapeHtml = (x)=> String(x||"").replace(/[&<>\"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
     const sha256 = async (str)=>{ const enc=new TextEncoder().encode(str); const buf=await crypto.subtle.digest("SHA-256",enc); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("") };
@@ -110,15 +120,23 @@
       const diff=Math.max(0,Math.floor((expiry-Date.now())/(1000*60*60)));
       return diff;
     };
+
+    // Date normaliser: YYYY-MM-DD or D/M/YYYY
     function normalizeDate(s){
       if(!s) return null;
       const t = String(s).trim();
-      if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;             // ISO
-      const m = t.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/); // D/M/YYYY
-      if (m){ const d=m[1].padStart(2,'0'), mo=m[2].padStart(2,'0'), y=m[3]; return `${y}-${mo}-${d}`; }
+      if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+      const m = t.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+      if (m){
+        const d = m[1].padStart(2,'0');
+        const mo = m[2].padStart(2,'0');
+        const y = m[3];
+        return `${y}-${mo}-${d}`;
+      }
       return null;
     }
-    // Accept both snake_case and camelCase; map to snake_case for UI
+
+    // Accept camelCase or snake_case
     function adaptBooking(b){
       const out = {...b};
       if (!out.booking_number && b.bookingNumber) out.booking_number = String(b.bookingNumber);
@@ -132,12 +150,10 @@
       return out;
     }
 
-    // ===== Local overrides (stored on this device) =====
     const LS_REGO = "regoOverrides_v1";
     const LS_STATUS = "statusOverrides_v1";
     const getMap = (k)=>{ try{return JSON.parse(localStorage.getItem(k)||"{}")}catch{return{}} };
     const setMap = (k,obj)=> localStorage.setItem(k, JSON.stringify(obj));
-
     const getOverrideRego = (key)=> getMap(LS_REGO)[key];
     const setOverrideRego = async (key, rego, booking)=>{
       const map=getMap(LS_REGO);
@@ -157,7 +173,6 @@
       }
     };
 
-    // ===== Keys / Filters =====
     const makeKey = (b)=> b.id || b.booking_number || `${b.name}|${b.unit}|${b.start_date}|${b.end_date}`;
     const todayYMD = new Date().toLocaleDateString("en-CA", { timeZone: "Australia/Melbourne" }); // YYYY-MM-DD
     const isValidToday = (b) => {
@@ -171,7 +186,17 @@
       return status !== "cancelled" && (SHOW_ALL ? true : inRange);
     };
 
-    // ===== Render =====
+    function regoSection(key, rego, b){
+      return `
+        <div class="editrow">
+          <label for="rego-${encodeURIComponent(key)}" class="rego" title="Vehicle rego">${rego?escapeHtml(rego):"—"}</label>
+          <input id="rego-${encodeURIComponent(key)}" class="input input-rego" value="${escapeHtml(rego)}" placeholder="Enter rego (optional)" maxlength="12" />
+          <button class="btn sm btn-save">Save</button>
+          <button class="btn sm btn-cancel" title="Reset field">Reset</button>
+        </div>
+      `;
+    }
+
     function render(list){
       const q = document.getElementById("q").value.trim().toLowerCase();
       let filtered = list.filter(isValidToday);
@@ -208,12 +233,7 @@
             <div class="name">${escapeHtml(b.name || "—")}</div>
             <div class="unit">${escapeHtml(b.unit || "")}</div>
           </div>
-          <div class="editrow">
-            <label for="rego-${encodeURIComponent(key)}" class="rego" title="Vehicle rego">${rego?escapeHtml(rego):"—"}</label>
-            <input id="rego-${encodeURIComponent(key)}" class="input input-rego" value="${escapeHtml(rego)}" placeholder="Enter rego (optional)" maxlength="12" />
-            <button class="btn sm btn-save">Save</button>
-            <button class="btn sm btn-cancel" title="Reset field">Reset</button>
-          </div>
+          ${regoSection(key, rego, b)}
           <div class="actions">
             ${isCancelled
               ? `<button class="btn sm" data-action="undo">Undo cancel</button>`
@@ -259,24 +279,39 @@
       document.getElementById("count").textContent = `${filtered.length} booking${filtered.length===1?"":"s"}`;
     }
 
-    // ===== Fetch & adapt =====
+    // Cache-busting + ETag polling
     async function load(){
       const src = DATA_URL + (DATA_URL.includes("?") ? `&_=${Date.now()}` : `?t=${Date.now()}`);
       document.getElementById("source").textContent = `data: ${DATA_URL}`;
       try{
-        const res = await fetch(src,{cache:"no-store"});
+        const res = await fetch(src, {
+          cache: "no-store",
+          headers: lastETag ? { "If-None-Match": lastETag } : {}
+        });
+        if(res.status === 304){
+          // No change — do nothing
+          return;
+        }
         if(!res.ok) throw new Error(res.status+" "+res.statusText);
+
+        lastETag = res.headers.get("ETag") || null;
+
         const json = await res.json();
         const {date,timezone,generated_at,bookings} = json || {};
         const adapted = Array.isArray(bookings) ? bookings.map(adaptBooking) : [];
-        all = {date, timezone: timezone || "Australia/Melbourne", generated_at, bookings: adapted};
-        const hash = await sha256(JSON.stringify(all));
-        if(prevHash && hash!==prevHash) showToast();
-        prevHash = hash;
-        document.getElementById("today").textContent = fmtDateLong(date || generated_at);
-        render(all.bookings);
-        localStorage.setItem("bookings-cache", JSON.stringify(all));
-        document.getElementById("updated").textContent = fmtDateLong(generated_at || new Date().toISOString());
+        const next = {date, timezone: timezone || "Australia/Melbourne", generated_at, bookings: adapted};
+        const hash = await sha256(JSON.stringify(next));
+
+        // Only rerender if data changed
+        if(prevHash !== hash){
+          all = next;
+          document.getElementById("today").textContent = fmtDateLong(date || generated_at);
+          render(all.bookings);
+          document.getElementById("updated").textContent = fmtDateLong(generated_at || new Date().toISOString());
+          localStorage.setItem("bookings-cache", JSON.stringify(all));
+          if(prevHash) showToast("Data updated");
+          prevHash = hash;
+        }
       }catch(e){
         const cached = localStorage.getItem("bookings-cache");
         if(cached){
@@ -291,7 +326,6 @@
       }
     }
 
-    // ===== Export (includes local overrides) =====
     function exportJson(){
       const regoMap = getMap(LS_REGO);
       const statusMap = getMap(LS_STATUS);
@@ -310,16 +344,19 @@
       const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="bookings-today.json"; a.click(); URL.revokeObjectURL(a.href);
     }
 
-    // ===== App wiring =====
     function startApp(){
       document.getElementById("btnRefresh").addEventListener("click", load);
       document.getElementById("btnExport").addEventListener("click", exportJson);
       document.getElementById("q").addEventListener("input", ()=>render(all.bookings));
+
+      // Live dot pulse
       let on=true; setInterval(()=>{ document.getElementById("liveDot").style.opacity=on?1:.35; on=!on; },800);
+
+      // Kick off and poll
       load(); setInterval(load, REFRESH_EVERY_MS);
     }
 
-    // ===== Lock =====
+    // Lock screen wiring
     document.getElementById("unlockBtn").addEventListener("click", ()=>{
       const val = document.getElementById("pass").value;
       if(val === DEMO_PASSWORD){
