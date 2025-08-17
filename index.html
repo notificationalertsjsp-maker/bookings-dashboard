@@ -6,15 +6,8 @@
   <title>Today’s Valid Bookings</title>
   <meta name="color-scheme" content="light dark" />
   <style>
-    :root{
-      --bg:#0b0c10;--panel:#111217;--text:#e9eef2;--muted:#9aa4ad;--accent:#5dd3ff;--ok:#27c07d;
-      --bad:#ff6b6b;--chip:#20232b;--border:#2a2f3a;--card:#151821;--shadow:0 10px 30px rgba(0,0,0,.35);
-      --warn:#f5a524
-    }
-    @media(prefers-color-scheme:light){:root{
-      --bg:#f6f7fb;--panel:#fff;--text:#1a1f2b;--muted:#5b6572;--accent:#006af6;--ok:#0b8e5a;--bad:#cc2e2e;
-      --chip:#eef2f8;--border:#e6e9f0;--card:#fff;--shadow:0 8px 24px rgba(16,24,40,.08);--warn:#b8860b
-    }}
+    :root{--bg:#0b0c10;--panel:#111217;--text:#e9eef2;--muted:#9aa4ad;--accent:#5dd3ff;--ok:#27c07d;--bad:#ff6b6b;--chip:#20232b;--border:#2a2f3a;--card:#151821;--shadow:0 10px 30px rgba(0,0,0,.35);--warn:#f5a524}
+    @media(prefers-color-scheme:light){:root{--bg:#f6f7fb;--panel:#fff;--text:#1a1f2b;--muted:#5b6572;--accent:#006af6;--ok:#0b8e5a;--bad:#cc2e2e;--chip:#eef2f8;--border:#e6e9f0;--card:#fff;--shadow:0 8px 24px rgba(16,24,40,.08);--warn:#b8860b}}
     *{box-sizing:border-box}
     body{margin:0;font:14px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,"Apple Color Emoji","Segoe UI Emoji";background:linear-gradient(180deg,var(--bg),var(--panel));color:var(--text);min-height:100vh}
     .wrap{max-width:980px;margin:0 auto;padding:24px}
@@ -25,6 +18,8 @@
     .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%, transparent)}
     .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:var(--chip);color:var(--text);border:1px solid var(--border);font-size:12px;white-space:nowrap}
     .btn{appearance:none;border:1px solid var(--border);background:var(--card);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer;box-shadow:var(--shadow)}
+    .btn.sm{padding:6px 10px;font-size:12px}
+    .btn.warn{border-color:var(--bad)}
     .btn:active{transform:translateY(1px)}
     .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 18px}
     .input{background:var(--card);color:var(--text);border:1px solid var(--border);padding:10px 12px;border-radius:10px;min-width:280px}
@@ -33,11 +28,11 @@
     .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
     .toprow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
     .right{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
-    .area{color:var(--muted)}
     .rego{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;background:var(--chip);border:1px solid var(--border);padding:4px 8px;border-radius:8px}
     .name{font-weight:600}
     .unit{color:var(--muted)}
     .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
     .footer{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
     .pill{padding:2px 8px;border-radius:999px;border:1px solid var(--border);background:var(--chip)}
     .empty{text-align:center;padding:40px;border:1px dashed var(--border);border-radius:16px;background:color-mix(in srgb,var(--card) 80%, transparent)}
@@ -45,13 +40,12 @@
     .toast.show{opacity:1;transform:translateY(0)}
     .hint{color:var(--warn);font-size:12px}
     .editrow{display:flex;gap:8px;align-items:center;margin-top:6px}
-    /* Simple lock screen */
     #lock{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--bg),var(--panel));z-index:50}
     #lock .panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);min-width:320px;text-align:center}
   </style>
 </head>
 <body>
-  <!-- BASIC PASSWORD GATE (demo only) -->
+  <!-- Password gate (demo only) -->
   <div id="lock">
     <div class="panel">
       <h2 style="margin:0 0 12px 0;">Enter password</h2>
@@ -78,7 +72,7 @@
     </header>
 
     <div class="controls">
-      <input class="input" id="q" type="search" placeholder="Search name / unit / area / email" />
+      <input class="input" id="q" type="search" placeholder="Search name / unit / email" />
       <span class="badge" id="count">0 bookings</span>
     </div>
 
@@ -94,20 +88,18 @@
   <div class="toast" id="toast">Data updated</div>
 
   <script>
-    // ====== DEMO PASSWORD (plain-text for testing) ======
+    // ===== CONFIG =====
     const DEMO_PASSWORD = "password";
-
-    // ====== CONFIG ======
     const REFRESH_EVERY_MS = 60_000;
     const DATA_URL = new URLSearchParams(location.search).get("data") || "bookings-today.json";
-    const POST_URL = new URLSearchParams(location.search).get("post"); // optional webhook for rego edits
+    const POST_URL = new URLSearchParams(location.search).get("post"); // optional webhook endpoint
     const SHOW_ALL = new URLSearchParams(location.search).get("all") === "1";
 
-    // ====== STATE ======
+    // ===== STATE =====
     let prevHash = null;
     let all = { date: null, timezone: "Australia/Melbourne", generated_at: null, bookings: [] };
 
-    // ====== UTIL ======
+    // ===== UTIL =====
     const fmtDateLong = (s)=>{ try{ const d=s?new Date(s):new Date(); return new Intl.DateTimeFormat("en-AU",{dateStyle:"full"}).format(d);}catch{return s||"—"} };
     const escapeHtml = (x)=> String(x||"").replace(/[&<>\"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
     const sha256 = async (str)=>{ const enc=new TextEncoder().encode(str); const buf=await crypto.subtle.digest("SHA-256",enc); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("") };
@@ -118,40 +110,74 @@
       const diff=Math.max(0,Math.floor((expiry-Date.now())/(1000*60*60)));
       return diff;
     };
-    const todayYMD = new Date().toLocaleDateString("en-CA", { timeZone: "Australia/Melbourne" }); // YYYY-MM-DD
-    const isValidToday = (b) =>
-      (b.status || "valid") !== "cancelled" &&
-      (!b.start_date || b.start_date <= todayYMD) &&
-      (!b.end_date   || todayYMD <= b.end_date);
+    function normalizeDate(s){
+      if(!s) return null;
+      const t = String(s).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;             // ISO
+      const m = t.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/); // D/M/YYYY
+      if (m){ const d=m[1].padStart(2,'0'), mo=m[2].padStart(2,'0'), y=m[3]; return `${y}-${mo}-${d}`; }
+      return null;
+    }
+    // Accept both snake_case and camelCase; map to snake_case for UI
+    function adaptBooking(b){
+      const out = {...b};
+      if (!out.booking_number && b.bookingNumber) out.booking_number = String(b.bookingNumber);
+      if (!out.id && b.bookingId) out.id = String(b.bookingId);
+      if (!out.unit && b.apartment) out.unit = String(b.apartment);
+      if (!out.start_date && b.startDate) out.start_date = normalizeDate(b.startDate) || String(b.startDate);
+      if (!out.end_date && b.endDate) out.end_date = normalizeDate(b.endDate) || String(b.endDate);
+      if (!out.source_link && b.slackPermalink) out.source_link = b.slackPermalink || "";
+      if (out.vehicleReg && !out.vehicle_rego) out.vehicle_rego = String(b.vehicleReg);
+      if (!out.status && b.status) out.status = String(b.status);
+      return out;
+    }
 
-    // ====== REGO OVERRIDES (local, optional POST) ======
-    const LS_KEY = "regoOverrides_v1";
-    const getOverrides = ()=>{ try{return JSON.parse(localStorage.getItem(LS_KEY)||"{}")}catch{return{}} };
-    const getOverride = (k)=> getOverrides()[k];
-    const setOverride = async (key, rego, booking)=>{
-      const map=getOverrides();
+    // ===== Local overrides (stored on this device) =====
+    const LS_REGO = "regoOverrides_v1";
+    const LS_STATUS = "statusOverrides_v1";
+    const getMap = (k)=>{ try{return JSON.parse(localStorage.getItem(k)||"{}")}catch{return{}} };
+    const setMap = (k,obj)=> localStorage.setItem(k, JSON.stringify(obj));
+
+    const getOverrideRego = (key)=> getMap(LS_REGO)[key];
+    const setOverrideRego = async (key, rego, booking)=>{
+      const map=getMap(LS_REGO);
       if(rego) map[key]=rego; else delete map[key];
-      localStorage.setItem(LS_KEY, JSON.stringify(map));
+      setMap(LS_REGO,map);
       if(POST_URL){
-        try{ await fetch(POST_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({key,rego,booking,at:new Date().toISOString()})}); }catch{}
+        try{ await fetch(POST_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"rego_update",key,rego,booking,at:new Date().toISOString()})}); }catch{}
       }
     };
-    const makeKey = (b)=> b.id || b.booking_number || `${b.name}|${b.unit}|${b.start_date}|${b.end_date}`;
+    const getOverrideStatus = (key)=> getMap(LS_STATUS)[key];
+    const setOverrideStatus = async (key, status, booking)=>{
+      const map=getMap(LS_STATUS);
+      if(status) map[key]=status; else delete map[key];
+      setMap(LS_STATUS,map);
+      if(POST_URL){
+        try{ await fetch(POST_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"status_update",key,status,booking,at:new Date().toISOString()})}); }catch{}
+      }
+    };
 
-    // ====== RENDER ======
+    // ===== Keys / Filters =====
+    const makeKey = (b)=> b.id || b.booking_number || `${b.name}|${b.unit}|${b.start_date}|${b.end_date}`;
+    const todayYMD = new Date().toLocaleDateString("en-CA", { timeZone: "Australia/Melbourne" }); // YYYY-MM-DD
+    const isValidToday = (b) => {
+      const key = makeKey(b);
+      const localStatus = getOverrideStatus(key);
+      const status = (localStatus || b.status || "valid").toLowerCase();
+      const start = normalizeDate(b.start_date);
+      const end   = normalizeDate(b.end_date);
+      const hasDates = !!start && !!end;
+      const inRange = hasDates && (start <= todayYMD && todayYMD <= end);
+      return status !== "cancelled" && (SHOW_ALL ? true : inRange);
+    };
+
+    // ===== Render =====
     function render(list){
       const q = document.getElementById("q").value.trim().toLowerCase();
-
-      // Base: today-only unless ?all=1
-      let filtered = SHOW_ALL ? list.slice() : list.filter(isValidToday);
-
-      // search
-      if(q) filtered = filtered.filter(b => [b.name,b.unit,b.area,b.email].join(" ").toLowerCase().includes(q));
-
-      // sort: end_date, area, name
-      filtered.sort((a,b)=> 
-        (a.end_date||"").localeCompare(b.end_date||"") ||
-        (a.area||"").localeCompare(b.area||"") ||
+      let filtered = list.filter(isValidToday);
+      if(q) filtered = filtered.filter(b => [b.name,b.unit,b.email].join(" ").toLowerCase().includes(q));
+      filtered.sort((a,b)=>
+        (normalizeDate(a.end_date)||"").localeCompare(normalizeDate(b.end_date)||"") ||
         (a.name||"").localeCompare(b.name||"")
       );
 
@@ -161,15 +187,17 @@
 
       for(const b of filtered){
         const key = makeKey(b);
-        const rego = (getOverride(key) || b.vehicle_rego || "").toUpperCase();
-        const hours = b.end_date ? hoursUntil(b.end_date) : null;
-        const validLine = b.end_date ? `Valid until 11:59pm ${escapeHtml(b.end_date)}${hours!==null?` • ~${hours}h left`:""}` : "Valid booking";
+        const rego = (getOverrideRego(key) || b.vehicle_rego || "").toUpperCase();
+        const endIso = normalizeDate(b.end_date);
+        const hours = endIso ? hoursUntil(endIso) : null;
+        const validLine = endIso ? `Valid until 11:59pm ${escapeHtml(endIso)}${hours!==null?` • ~${hours}h left`:""}` : "Valid booking";
+        const isCancelled = (getOverrideStatus(key) || b.status || "").toLowerCase() === "cancelled";
 
         const el = document.createElement("article");
         el.className = "card";
         el.innerHTML = `
           <div class="toprow">
-            <span class="badge">🅿️ ${escapeHtml(b.area || "Parking")}</span>
+            <span class="badge">🅿️ Parking</span>
             <span class="badge">${escapeHtml(validLine)}</span>
             <div class="right">
               ${b.booking_number ? `<span class="badge" title="Booking #">#${escapeHtml(b.booking_number)}</span>` : ""}
@@ -180,41 +208,58 @@
             <div class="name">${escapeHtml(b.name || "—")}</div>
             <div class="unit">${escapeHtml(b.unit || "")}</div>
           </div>
-          ${regoSection(key, rego, b)}
+          <div class="editrow">
+            <label for="rego-${encodeURIComponent(key)}" class="rego" title="Vehicle rego">${rego?escapeHtml(rego):"—"}</label>
+            <input id="rego-${encodeURIComponent(key)}" class="input input-rego" value="${escapeHtml(rego)}" placeholder="Enter rego (optional)" maxlength="12" />
+            <button class="btn sm btn-save">Save</button>
+            <button class="btn sm btn-cancel" title="Reset field">Reset</button>
+          </div>
+          <div class="actions">
+            ${isCancelled
+              ? `<button class="btn sm" data-action="undo">Undo cancel</button>`
+              : `<button class="btn sm warn" data-action="cancel">Cancel (demo)</button>`}
+          </div>
           <div class="hint">${rego ? "" : "No rego on file — add one if known (optional)."}</div>
         `;
         cards.appendChild(el);
 
         const saveBtn = el.querySelector(".btn-save");
-        const cancelBtn = el.querySelector(".btn-cancel");
+        const resetBtn = el.querySelector(".btn-cancel");
         const input = el.querySelector(".input-rego");
         if(saveBtn && input){
           saveBtn.addEventListener("click", async ()=>{
             const val=(input.value||"").trim().toUpperCase();
-            await setOverride(key,val,b);
+            await setOverrideRego(key,val,b);
             showToast(val?`Saved rego: ${val}`:"Cleared rego");
             render(list);
           });
         }
-        if(cancelBtn && input){
-          cancelBtn.addEventListener("click", ()=>{ input.value = getOverride(key) || b.vehicle_rego || ""; });
+        if(resetBtn && input){
+          resetBtn.addEventListener("click", ()=>{
+            input.value = getOverrideRego(key) || b.vehicle_rego || "";
+          });
+        }
+
+        const actBtn = el.querySelector("[data-action]");
+        if(actBtn){
+          actBtn.addEventListener("click", async ()=>{
+            const action = actBtn.getAttribute("data-action");
+            if(action === "cancel"){
+              await setOverrideStatus(key,"cancelled",b);
+              showToast("Marked as cancelled (demo)");
+              render(list);
+            }else if(action === "undo"){
+              await setOverrideStatus(key,null,b);
+              showToast("Undo cancellation");
+              render(list);
+            }
+          });
         }
       }
       document.getElementById("count").textContent = `${filtered.length} booking${filtered.length===1?"":"s"}`;
     }
 
-    function regoSection(key, rego, b){
-      return `
-        <div class="editrow">
-          <label for="rego-${encodeURIComponent(key)}" class="rego" title="Vehicle rego">${rego?escapeHtml(rego):"—"}</label>
-          <input id="rego-${encodeURIComponent(key)}" class="input input-rego" value="${escapeHtml(rego)}" placeholder="Enter rego (optional)" maxlength="12" />
-          <button class="btn btn-save">Save</button>
-          <button class="btn btn-cancel" title="Reset field">Reset</button>
-        </div>
-      `;
-    }
-
-    // ====== FETCH ======
+    // ===== Fetch & adapt =====
     async function load(){
       const src = DATA_URL + (DATA_URL.includes("?") ? `&_=${Date.now()}` : `?t=${Date.now()}`);
       document.getElementById("source").textContent = `data: ${DATA_URL}`;
@@ -223,7 +268,8 @@
         if(!res.ok) throw new Error(res.status+" "+res.statusText);
         const json = await res.json();
         const {date,timezone,generated_at,bookings} = json || {};
-        all = {date, timezone: timezone || "Australia/Melbourne", generated_at, bookings: Array.isArray(bookings)?bookings:[]};
+        const adapted = Array.isArray(bookings) ? bookings.map(adaptBooking) : [];
+        all = {date, timezone: timezone || "Australia/Melbourne", generated_at, bookings: adapted};
         const hash = await sha256(JSON.stringify(all));
         if(prevHash && hash!==prevHash) showToast();
         prevHash = hash;
@@ -233,21 +279,38 @@
         document.getElementById("updated").textContent = fmtDateLong(generated_at || new Date().toISOString());
       }catch(e){
         const cached = localStorage.getItem("bookings-cache");
-        if(cached){ try{ all = JSON.parse(cached); render(all.bookings);}catch{} }
+        if(cached){
+          try{
+            const tmp = JSON.parse(cached);
+            tmp.bookings = (tmp.bookings||[]).map(adaptBooking);
+            all = tmp;
+            render(all.bookings);
+          }catch{}
+        }
         showToast("Offline: showing cached data");
       }
     }
 
-    // ====== EXPORT ======
+    // ===== Export (includes local overrides) =====
     function exportJson(){
-      const map=getOverrides();
-      const merged = all.bookings.map(b=>{ const k=makeKey(b); const r=map[k]; return r?{...b,vehicle_rego:r}:b; });
+      const regoMap = getMap(LS_REGO);
+      const statusMap = getMap(LS_STATUS);
+      const merged = all.bookings.map(b=>{
+        const k = makeKey(b);
+        const rego = regoMap[k];
+        const status = statusMap[k];
+        return {
+          ...b,
+          ...(rego ? { vehicle_rego: rego } : {}),
+          ...(status ? { status } : {})
+        };
+      });
       const out = {...all, bookings: merged, exported_at:new Date().toISOString()};
       const blob = new Blob([JSON.stringify(out,null,2)],{type:"application/json"});
       const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="bookings-today.json"; a.click(); URL.revokeObjectURL(a.href);
     }
 
-    // ====== APP WIRING ======
+    // ===== App wiring =====
     function startApp(){
       document.getElementById("btnRefresh").addEventListener("click", load);
       document.getElementById("btnExport").addEventListener("click", exportJson);
@@ -256,7 +319,7 @@
       load(); setInterval(load, REFRESH_EVERY_MS);
     }
 
-    // ====== LOCK BEHAVIOUR ======
+    // ===== Lock =====
     document.getElementById("unlockBtn").addEventListener("click", ()=>{
       const val = document.getElementById("pass").value;
       if(val === DEMO_PASSWORD){
@@ -268,7 +331,6 @@
       }
     });
 
-    // Show lock on load
     document.getElementById("app").hidden = true;
     document.getElementById("lock").style.display = "flex";
 
