@@ -1,7 +1,7 @@
 {
   "date": "2025-08-18",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-18T04:00:16.304Z",
+  "generated_at": "2025-08-18T04:00:17.420Z",
   "bookings": [
     {
       "id": "wendy-501RO",
@@ -450,8 +450,8 @@
     {
       "booking_number": "Details",
       "id": "slack:Details",
-      "name": "* John Alexander Salas",
-      "email": "j.h.salas@hotmail.es",
+      "name": "* Ashley Blake",
+      "email": "ashleybrookeblake@gmail.com",
       "unit": null,
       "start_date": "2025-08-18",
       "end_date": "2025-08-19",
@@ -464,8 +464,8 @@
         "endDate": "19/8/2025"
       },
       "slackPermalink": null,
-      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8890\n:bust_in_silhouette: *Name:* John Alexander Salas\n:e-mail: *Email:* <mailto:j.h.salas@hotmail.es|j.h.salas@hotmail.es>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 802RF\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Level Two Visitor Level Two 44",
-      "parsedAt": "2025-08-18T04:00:15.525Z"
+      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8889\n:bust_in_silhouette: *Name:* Ashley Blake\n:e-mail: *Email:* <mailto:ashleybrookeblake@gmail.com|ashleybrookeblake@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 2309RO\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Level Two Visitor Level Two 40",
+      "parsedAt": "2025-08-18T04:00:16.700Z"
     }
   ]
 }
