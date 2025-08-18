@@ -1,7 +1,7 @@
 {
   "date": "2025-08-18",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-18T10:15:18.798Z",
+  "generated_at": "2025-08-18T10:45:17.668Z",
   "bookings": [
     {
       "id": "wendy-501RO",
@@ -450,22 +450,22 @@
     {
       "booking_number": "Details",
       "id": "slack:Details",
-      "name": "* David Ruiz",
-      "email": "maoruiz89@hotmail.com",
+      "name": "* Ashley Blake",
+      "email": "ashleybrookeblake@gmail.com",
       "unit": null,
-      "start_date": "2025-08-18",
-      "end_date": "2025-08-19",
+      "start_date": "2025-08-19",
+      "end_date": "2025-08-20",
       "vehicle_rego": null,
       "status": "valid",
       "source_link": null,
       "apartment": null,
       "originalDateRange": {
-        "startDate": "18/8/2025",
-        "endDate": "19/8/2025"
+        "startDate": "19/8/2025",
+        "endDate": "20/8/2025"
       },
       "slackPermalink": null,
-      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8904\n:bust_in_silhouette: *Name:* David Ruiz\n:e-mail: *Email:* <mailto:maoruiz89@hotmail.com|maoruiz89@hotmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 506RF\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Level Two Visitor Level Two 42",
-      "parsedAt": "2025-08-18T10:15:18.079Z"
+      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8905\n:bust_in_silhouette: *Name:* Ashley Blake\n:e-mail: *Email:* <mailto:ashleybrookeblake@gmail.com|ashleybrookeblake@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 2309RO\n:alarm_clock: *Time:* 19/8/2025 to 20/8/2025\n:dart: *Amenity:* Parking Level One Visitor Level One 33",
+      "parsedAt": "2025-08-18T10:45:16.967Z"
     }
   ]
 }
