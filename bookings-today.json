@@ -1,7 +1,7 @@
 {
   "date": "2025-08-18",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-18T06:15:18.202Z",
+  "generated_at": "2025-08-18T07:15:16.375Z",
   "bookings": [
     {
       "id": "wendy-501RO",
@@ -450,8 +450,8 @@
     {
       "booking_number": "Details",
       "id": "slack:Details",
-      "name": "* Ma Kismet Ingal Santiago",
-      "email": "kismet_s@yahoo.com",
+      "name": "* Liam Yokoyama",
+      "email": "liam.yoko@outlook.com",
       "unit": null,
       "start_date": "2025-08-18",
       "end_date": "2025-08-19",
@@ -464,8 +464,8 @@
         "endDate": "19/8/2025"
       },
       "slackPermalink": null,
-      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8895\n:bust_in_silhouette: *Name:* Ma Kismet Ingal Santiago\n:e-mail: *Email:* <mailto:kismet_s@yahoo.com|kismet_s@yahoo.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 1204RO\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Ground Level Visitor Ground 23",
-      "parsedAt": "2025-08-18T06:15:17.619Z"
+      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8899\n:bust_in_silhouette: *Name:* Liam Yokoyama\n:e-mail: *Email:* <mailto:liam.yoko@outlook.com|liam.yoko@outlook.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 2402RO\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Level One Visitor Level One 25",
+      "parsedAt": "2025-08-18T07:15:15.630Z"
     }
   ]
 }
