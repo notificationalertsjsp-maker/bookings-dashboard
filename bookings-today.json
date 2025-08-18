@@ -1,7 +1,7 @@
 {
   "date": "2025-08-18",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-18T02:30:15.900Z",
+  "generated_at": "2025-08-18T03:30:16.638Z",
   "bookings": [
     {
       "id": "wendy-501RO",
@@ -450,22 +450,22 @@
     {
       "booking_number": "Details",
       "id": "slack:Details",
-      "name": "* Patricia Moritz",
-      "email": "triciamoritz@bigpond.com",
+      "name": "* Esra Osman",
+      "email": "esraharbi1993@gmail.com",
       "unit": null,
-      "start_date": "2025-08-19",
-      "end_date": "2025-08-20",
+      "start_date": "2025-08-18",
+      "end_date": "2025-08-18",
       "vehicle_rego": null,
       "status": "valid",
       "source_link": null,
       "apartment": null,
       "originalDateRange": {
-        "startDate": "19/8/2025",
-        "endDate": "20/8/2025"
+        "startDate": "18/8/2025",
+        "endDate": "18/8/2025"
       },
       "slackPermalink": null,
-      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8887\n:bust_in_silhouette: *Name:* Patricia Moritz\n:e-mail: *Email:* <mailto:triciamoritz@bigpond.com|triciamoritz@bigpond.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 1006RF\n:alarm_clock: *Time:* 19/8/2025 to 20/8/2025\n:dart: *Amenity:* Parking Level Two Visitor Level Two 35",
-      "parsedAt": "2025-08-18T02:30:15.257Z"
+      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8888\n:bust_in_silhouette: *Name:* Esra Osman\n:e-mail: *Email:* <mailto:esraharbi1993@gmail.com|esraharbi1993@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 1303RF\n:alarm_clock: *Time:* 18/8/2025 to 18/8/2025\n:dart: *Amenity:* Parking Ground Level Visitor Ground 22",
+      "parsedAt": "2025-08-18T03:30:16.019Z"
     }
   ]
 }
