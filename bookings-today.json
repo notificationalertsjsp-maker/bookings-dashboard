@@ -1,7 +1,7 @@
 {
   "date": "2025-08-18",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-18T08:30:19.067Z",
+  "generated_at": "2025-08-18T09:30:18.558Z",
   "bookings": [
     {
       "id": "wendy-501RO",
@@ -450,22 +450,22 @@
     {
       "booking_number": "Details",
       "id": "slack:Details",
-      "name": "* Maria Borcsok",
-      "email": "mariaborcsok@gmail.com",
+      "name": "* Justin Mengel",
+      "email": "justinmengel02@gmail.com",
       "unit": null,
-      "start_date": "2025-08-19",
-      "end_date": "2025-08-19",
+      "start_date": "2025-08-20",
+      "end_date": "2025-08-20",
       "vehicle_rego": null,
       "status": "valid",
       "source_link": null,
       "apartment": null,
       "originalDateRange": {
-        "startDate": "19/8/2025",
-        "endDate": "19/8/2025"
+        "startDate": "20/8/2025",
+        "endDate": "20/8/2025"
       },
       "slackPermalink": null,
-      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8900\n:bust_in_silhouette: *Name:* Maria Borcsok\n:e-mail: *Email:* <mailto:mariaborcsok@gmail.com|mariaborcsok@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 2304RO\n:alarm_clock: *Time:* 19/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Ground Level Visitor Ground 22",
-      "parsedAt": "2025-08-18T08:30:18.306Z"
+      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8901\n:bust_in_silhouette: *Name:* Justin Mengel\n:e-mail: *Email:* <mailto:justinmengel02@gmail.com|justinmengel02@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 307RF\n:alarm_clock: *Time:* 20/8/2025 to 20/8/2025\n:dart: *Amenity:* Parking Level Two Visitor Level Two 41",
+      "parsedAt": "2025-08-18T09:30:17.836Z"
     }
   ]
 }
