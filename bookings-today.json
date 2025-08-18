@@ -1,7 +1,7 @@
 {
-  "date": "2025-08-17",
+  "date": "2025-08-18",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-17T23:00:17.870Z",
+  "generated_at": "2025-08-18T00:30:16.833Z",
   "bookings": [
     {
       "id": "wendy-501RO",
@@ -450,22 +450,22 @@
     {
       "booking_number": "Details",
       "id": "slack:Details",
-      "name": "* John Krikas",
-      "email": "jkrikasmail@gmail.com",
+      "name": "* N/A",
+      "email": null,
       "unit": null,
-      "start_date": "2025-08-18",
-      "end_date": "2025-08-19",
+      "start_date": "2025-08-17",
+      "end_date": "2025-08-18",
       "vehicle_rego": null,
       "status": "valid",
       "source_link": null,
       "apartment": null,
       "originalDateRange": {
-        "startDate": "18/8/2025",
-        "endDate": "19/8/2025"
+        "startDate": "17/8/2025",
+        "endDate": "18/8/2025"
       },
       "slackPermalink": null,
-      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8875\n:bust_in_silhouette: *Name:* John Krikas\n:e-mail: *Email:* <mailto:jkrikasmail@gmail.com|jkrikasmail@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 901RF\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Level One Visitor Level One 26",
-      "parsedAt": "2025-08-17T23:00:17.246Z"
+      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* N/A\n:bust_in_silhouette: *Name:* N/A\n:e-mail: *Email:* N/A\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 2307RO\n:alarm_clock: *Time:* 17/8/2025 to 18/8/2025 to\n:dart: *Amenity:* Parking Level One Visitor Level One 29",
+      "parsedAt": "2025-08-18T00:30:16.051Z"
     }
   ]
 }
