@@ -1,7 +1,7 @@
 {
   "date": "2025-08-18",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-18T01:15:17.802Z",
+  "generated_at": "2025-08-18T02:15:17.408Z",
   "bookings": [
     {
       "id": "wendy-501RO",
@@ -450,22 +450,22 @@
     {
       "booking_number": "Details",
       "id": "slack:Details",
-      "name": "* Nozomi Miyakawa",
-      "email": "nozomi5288@gmail.com",
+      "name": "* Kira Thomas Wetere",
+      "email": "kiratwetere@gmail.com",
       "unit": null,
-      "start_date": "2025-08-20",
-      "end_date": "2025-08-21",
+      "start_date": "2025-08-18",
+      "end_date": "2025-08-19",
       "vehicle_rego": null,
       "status": "valid",
       "source_link": null,
       "apartment": null,
       "originalDateRange": {
-        "startDate": "20/8/2025",
-        "endDate": "21/8/2025"
+        "startDate": "18/8/2025",
+        "endDate": "19/8/2025"
       },
       "slackPermalink": null,
-      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8883\n:bust_in_silhouette: *Name:* Nozomi Miyakawa\n:e-mail: *Email:* <mailto:nozomi5288@gmail.com|nozomi5288@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 101RF\n:alarm_clock: *Time:* 20/8/2025 to 21/8/2025\n:dart: *Amenity:* Parking Level One Visitor Level One 30",
-      "parsedAt": "2025-08-18T01:15:16.941Z"
+      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8886\n:bust_in_silhouette: *Name:* Kira Thomas Wetere\n:e-mail: *Email:* <mailto:kiratwetere@gmail.com|kiratwetere@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 1004RO\n:alarm_clock: *Time:* 18/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Ground Level Visitor Ground 18",
+      "parsedAt": "2025-08-18T02:15:16.705Z"
     }
   ]
 }
