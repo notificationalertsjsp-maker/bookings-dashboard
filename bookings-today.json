@@ -1,7 +1,7 @@
 {
   "date": "2025-08-19",
   "timezone": "Australia/Melbourne",
-  "generated_at": "2025-08-19T00:15:16.269Z",
+  "generated_at": "2025-08-19T00:45:16.796Z",
   "bookings": [
     {
       "id": "wendy-501RO",
@@ -450,22 +450,22 @@
     {
       "booking_number": "Details",
       "id": "slack:Details",
-      "name": "* Tania Noche",
-      "email": "tania.noche26@gmail.com",
+      "name": "* Alex Harding",
+      "email": "alex.wattsgreen14@gmail.com",
       "unit": null,
-      "start_date": "2025-08-19",
-      "end_date": "2025-08-19",
+      "start_date": "2025-08-20",
+      "end_date": "2025-08-21",
       "vehicle_rego": null,
       "status": "valid",
       "source_link": null,
       "apartment": null,
       "originalDateRange": {
-        "startDate": "19/8/2025",
-        "endDate": "19/8/2025"
+        "startDate": "20/8/2025",
+        "endDate": "21/8/2025"
       },
       "slackPermalink": null,
-      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8914\n:bust_in_silhouette: *Name:* Tania Noche\n:e-mail: *Email:* <mailto:tania.noche26@gmail.com|tania.noche26@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 2602RO\n:alarm_clock: *Time:* 19/8/2025 to 19/8/2025\n:dart: *Amenity:* Parking Level One Visitor Level One 31",
-      "parsedAt": "2025-08-19T00:15:15.588Z"
+      "originalMessage": ":office: *New Booking Details*\n\n:clipboard: *Booking Number:* 8917\n:bust_in_silhouette: *Name:* Alex Harding\n:e-mail: *Email:* <mailto:alex.wattsgreen14@gmail.com|alex.wattsgreen14@gmail.com>\n:house: *Building:* 2-8 Joseph Rd\n:door: *Apartment:* 108RF\n:alarm_clock: *Time:* 20/8/2025 to 21/8/2025\n:dart: *Amenity:* Parking Level One Visitor Level One 25",
+      "parsedAt": "2025-08-19T00:45:16.094Z"
     }
   ]
 }
